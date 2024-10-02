@@ -1,0 +1,165 @@
+{
+	"name": "tweakedcc-intellisense",
+	"description": "A plugin that provide IntelliSense and Pastebin Upload for Tweaked:CC Minecraft Mod.",
+	"author": "Kakumi",
+	"license": "MIT",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"publisher": "vscode-samples",
+	"categories": [
+		"Programming Languages"
+	],
+	"keywords": [
+		"multi-root ready"
+	],
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"activationEvents": [
+		"onLanguage:plaintext"
+	],
+	"main": "./client/out/extension",
+	"contributes": {
+		"languages": [
+		{
+			"id": "lua",
+			"aliases": [
+			"Lua"
+			],
+			"extensions": [
+			".lua",
+			".luacheckrc"
+			],
+			"configuration": "./language-configuration.json"
+		}
+		],
+		"configuration": {
+		"title": "Lua",
+		"properties": {
+			"lua.luacheckPath": {
+			"type": [
+				"string"
+			],
+			"default": "luacheck",
+			"description": "Specifies the path to the luacheck binary (if not found on PATH).\nNote: luacheck can be invoked via a .bat or a .exe file, depending on the version you have. Make sure you specify the correct one."
+			},
+			"lua.preferLuaCheckErrors": {
+			"type": "boolean",
+			"default": false,
+			"description": "Specifies whether to prefer luacheck errors over the standard luaparse errors if luacheck is available"
+			},
+			"lua.targetVersion": {
+			"type": "string",
+			"default": "5.1",
+			"description": "Specifies the target version of Lua",
+			"enum": [
+				"5.1",
+				"5.2",
+				"5.3"
+			]
+			},
+			"lua.format.enabled": {
+			"type": "boolean",
+			"default": true,
+			"description": "Specifies whether to use the Lua formatter"
+			},
+			"lua.format.lineWidth": {
+			"type": "integer",
+			"default": 120,
+			"description": "Maximum length of a line before it will be wrapped"
+			},
+			"lua.format.useTabs": {
+			"type": [
+				"null",
+				"boolean"
+			],
+			"default": null,
+			"description": "Force the formatter to use tabs over spaces. A value of null (default) indicates that editor settings should be used."
+			},
+			"lua.format.indentCount": {
+			"type": [
+				"null",
+				"integer"
+			],
+			"default": null,
+			"description": "Number of spaces to indent. A value of null (default) indicates that editor settings should be used."
+			},
+			"lua.format.singleQuote": {
+			"type": "boolean",
+			"default": false,
+			"description": "Whether to use single or double quotes on strings. Defaults to double quotes"
+			},
+			"lua.server.command": {
+			"type": [
+				"string",
+				"null"
+			],
+			"default": null,
+			"description": "When defined, uses an external language server using the given shell command."
+			},
+			"lua.server.arguments": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"title": "arguments"
+			},
+			"default": [],
+			"description": "When lua.server.command is defined, pass as command line arguments."
+			},
+			"lua.format.linebreakMultipleAssignments": {
+			"type": "boolean",
+			"default": false,
+			"description": "Whether to split multiple assignments onto separate lines. Defaults to false"
+			},
+			"lua.linting.enabled": {
+			"type": "boolean",
+			"default": true,
+			"description": "Specifies whether to enable linting of source files"
+			},
+			"lua.linting.luaCheckConfig": {
+			"type": [
+				"string",
+				"null"
+			],
+			"default": null,
+			"description": "Path to a .luacheckrc to be used for linting, instead of the default luacheck search path"
+			},
+			"lua.linting.luaCheckArgs": {
+			"type": "array",
+			"items": {
+				"type": "string",
+				"title": "arguments"
+			},
+			"default": [],
+			"description": "Additional arguments to pass to luacheck"
+			}
+		}
+		},
+		"commands": [
+			{
+				"command": "tweakedcc-intellisense.uploadToPastebin",
+				"title": "Upload to Pastebin"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.6",
+		"@types/node": "^18.14.6",
+		"@typescript-eslint/eslint-plugin": "^7.1.0",
+		"@typescript-eslint/parser": "^7.1.0",
+		"eslint": "^8.57.0",
+		"mocha": "^10.3.0",
+		"typescript": "^5.3.3"
+	}
+}
