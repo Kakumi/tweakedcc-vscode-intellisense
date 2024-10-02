@@ -1,14 +1,13 @@
-# LSP Example
+# Tweaked:CC IntelliSense
 
-Heavily documented sample code for https://code.visualstudio.com/api/language-extensions/language-server-extension-guide
+VSCode Extension to support IntelliSense for [Tweaked:CC](https://tweaked.cc) (previously [ComputerCraft](https://github.com/dan200/ComputerCraft))
+This project used [LSP Example](https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-sample) and [vscode-lua](https://github.com/trixnz/vscode-lua).
 
 ## Functionality
 
-This Language Server works for plain text file. It has the following language features:
+This Language Server works for lua file. It has the following language features:
 - Completions
 - Diagnostics regenerated on each file change or configuration change
-
-It also includes an End-to-End test.
 
 ## Structure
 
