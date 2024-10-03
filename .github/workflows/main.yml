@@ -30,10 +30,14 @@ jobs:
     - name: Package the extension
       run: npx vsce package
 
+    - name: Read package version
+      id: version_step
+      run: echo "PACKAGE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
     - name: Create Release Asset
       uses: actions/upload-artifact@v3.2.1-node20
       with:
-        name: cctweaked-intellisense
+        name: cctweaked-intellisense-${{ env.PACKAGE_VERSION }}
         path: '*.vsix' # Adjust this if your VSIX filename is different
 
   publish:
@@ -44,15 +48,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4.2.0
 
+    - name: Read package version
+      id: version_step
+      run: echo "PACKAGE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
     - name: Download Release Asset
       uses: actions/download-artifact@v3.0.2
       with:
         name: cctweaked-intellisense
         path: ./ # This will download the artifact to the current directory
-
-    - name: Read package version
-      id: version_step
-      run: echo "PACKAGE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
 
     - name: Release
       uses: softprops/action-gh-release@v2
@@ -61,6 +65,6 @@ jobs:
         draft: false
         fail_on_unmatched_files: true
         prerelease: false
-        files: ./cctweaked-intellisense
+        files: cctweaked-intellisense-${{ env.PACKAGE_VERSION }}.vsix
         token: ${{ secrets.GITHUB_TOKEN }}
         make_latest: true
