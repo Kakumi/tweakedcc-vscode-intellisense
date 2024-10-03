@@ -40,6 +40,12 @@ jobs:
         name: cctweaked-intellisense-${{ env.PACKAGE_VERSION }}
         path: '*.vsix' # Adjust this if your VSIX filename is different
 
+    - name: Publish to Visual Studio Marketplace
+      uses: HaaLeo/publish-vscode-extension@v1
+      with:
+        pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        registryUrl: https://marketplace.visualstudio.com
+
   publish:
     runs-on: ubuntu-latest
     needs: build
@@ -55,7 +61,7 @@ jobs:
     - name: Download Release Asset
       uses: actions/download-artifact@v3.0.2
       with:
-        name: cctweaked-intellisense
+        name: cctweaked-intellisense-${{ env.PACKAGE_VERSION }}
         path: ./ # This will download the artifact to the current directory
 
     - name: Release
