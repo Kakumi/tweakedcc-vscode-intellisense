@@ -50,6 +50,37 @@ jobs:
         name: cctweaked-intellisense
         path: ./ # This will download the artifact to the current directory
 
+    - name: Get version
+      uses: iwsllc/read-package-version@fe98e6e62b84362d669498ad506200be2340e8a1
+      id: get-version
+      
+    - name: Create Draft Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: "v${{ steps.get-version.outputs.version }}"
+        release_name: "${{ steps.get-version.outputs.version }}"
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_name: CC-Tweaked-IntelliSense.vsix
+        asset_content_type: application/x-msdownload
+    
+    - name: Publish Release
+      uses: eregon/publish-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+
     #- name: Publish to Marketplace
      # env:
       #  VSCE_PAT: ${{ secrets.VSCE_PAT }} # Add your personal access token to Secrets
