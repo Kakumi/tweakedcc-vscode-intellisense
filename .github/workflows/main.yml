@@ -59,7 +59,8 @@ jobs:
       with:
         tag_name: ${{ env.PACKAGE_VERSION }}
         draft: false
+        fail_on_unmatched_files: true
         prerelease: false
-        files: cctweaked-intellisense.vsix
+        files: ./cctweaked-intellisense
         token: ${{ secrets.GITHUB_TOKEN }}
         make_latest: true
