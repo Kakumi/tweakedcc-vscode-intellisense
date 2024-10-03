@@ -55,7 +55,7 @@ jobs:
     - name: Download Release Asset
       uses: actions/download-artifact@v3.0.2
       with:
-        name: cctweaked-intellisense
+        name: cctweaked-intellisense-${{ env.PACKAGE_VERSION }}
         path: ./ # This will download the artifact to the current directory
 
     - name: Release
