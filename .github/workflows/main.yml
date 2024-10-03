@@ -51,7 +51,7 @@ jobs:
         path: ./ # This will download the artifact to the current directory
 
     - name: Get version
-      uses: iwsllc/read-package-version@fe98e6e62b84362d669498ad506200be2340e8a1
+      uses: culshaw/read-package-node-version-actions@v2.0.0
       id: get-version
       
     - name: Create Draft Release
@@ -60,8 +60,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: "v${{ steps.get-version.outputs.version }}"
-        release_name: "${{ steps.get-version.outputs.version }}"
+        tag_name: "v${{ steps.package-node-version.outputs.version }}"
+        release_name: "${{ steps.package-node-version.outputs.version }}"
         draft: false
         prerelease: false
     
