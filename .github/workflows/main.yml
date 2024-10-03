@@ -50,13 +50,6 @@ jobs:
         name: cctweaked-intellisense
         path: ./ # This will download the artifact to the current directory
 
-    - name: Get Version
-      uses: xile611/read-package-version-action@v1
-      id: package-version
-
-    - name: Show version number
-      run: echo "Version is ${{ steps.package-version.outputs.version }}"
-
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
@@ -65,4 +58,3 @@ jobs:
         files: cctweaked-intellisense.vsix
         token: ${{ secrets.GITHUB_TOKEN }}
         make_latest: true
-        tag_name: ${{ steps.package-version.outputs.version }}
