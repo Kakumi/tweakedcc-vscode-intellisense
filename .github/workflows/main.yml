@@ -51,38 +51,15 @@ jobs:
         path: ./ # This will download the artifact to the current directory
 
     - name: Get version
-      uses: tibor19/node-version-from-package-json@v2
-      id: node-version
-      
-    - name: Create Draft Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: gagle/package-version@v1
+      id: package-version
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: "v${{ steps.node-version.outputs.version }}"
-        release_name: "${{ steps.node-version.outputs.version }}"
         draft: false
         prerelease: false
-    
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: CC-Tweaked-IntelliSense.vsix
-        asset_content_type: application/x-msdownload
-    
-    - name: Publish Release
-      uses: eregon/publish-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        release_id: ${{ steps.create_release.outputs.id }}
-
-    #- name: Publish to Marketplace
-     # env:
-      #  VSCE_PAT: ${{ secrets.VSCE_PAT }} # Add your personal access token to Secrets
-      #run: |
-       # npx vsce publish --pat $VSCE_PAT
+        files: cctweaked-intellisense.vsix
+        token: ${{ secrets.GITHUB_TOKEN }}
+        make_latest: true
+        tag_name: ${{ steps.package-version.outputs.version }}
