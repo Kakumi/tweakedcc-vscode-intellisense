@@ -1,7 +1,8 @@
 {
   "name": "cctweaked-intellisense",
   "description": "A plugin that provide IntelliSense and Pastebin Upload for CC:Tweaked Minecraft Mod.",
-  "author": "Kakumi",
+  "author": "Damien Brebion",
+  "publisher": "cc-tweaked-intellisense",
   "license": "MIT",
   "version": "1.0.0",
   "repository": {
