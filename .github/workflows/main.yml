@@ -50,9 +50,14 @@ jobs:
         name: cctweaked-intellisense
         path: ./ # This will download the artifact to the current directory
 
+    - name: Read package version
+      id: version_step
+      run: echo "PACKAGE_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ env.PACKAGE_VERSION }}
         draft: false
         prerelease: false
         files: cctweaked-intellisense.vsix
