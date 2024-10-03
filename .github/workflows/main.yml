@@ -1,0 +1,56 @@
+name: Build and Publish VS Code Extension
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16' # Specify your Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the extension
+      run: npm run compile # or any command you use to build your extension
+
+    - name: Package the extension
+      run: npx vsce package
+
+    - name: Create Release Asset
+      uses: actions/upload-artifact@v2
+      with:
+        name: cctweaked-intellisense
+        path: '*.vsix' # Adjust this if your VSIX filename is different
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download Release Asset
+      uses: actions/download-artifact@v2
+      with:
+        name: cctweaked-intellisense
+        path: ./ # This will download the artifact to the current directory
+
+    #- name: Publish to Marketplace
+     # env:
+      #  VSCE_PAT: ${{ secrets.VSCE_PAT }} # Add your personal access token to Secrets
+      #run: |
+       # npx vsce publish --pat $VSCE_PAT
