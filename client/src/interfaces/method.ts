@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 export interface Method {
   label: string;
-  documentation: vscode.MarkdownString;
+  documentation: string | vscode.MarkdownString;
   detail: string;
   parameters: string[];
 }

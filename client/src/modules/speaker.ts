@@ -1,0 +1,13 @@
+import * as vscode from "vscode";
+import BaseModule from "./base.module";
+import { Method } from "../interfaces/method";
+
+export default class speakerModule extends BaseModule {
+  constructor() {
+    super(`speaker`, `The speaker peripheral allows your computer to play notes and other sounds.`);
+  }
+
+  protected getMethods(): Method[] {
+    return [{"label":"playNote","detail":"playNote(instrument: string, volume?: number, pitch?: number): boolean","parameters":["instrument: string","volume?: number","pitch?: number"],"documentation":"Plays a note block note through the speaker.\n\n**Parameters:**\n- **instrument: string** The instrument to use to play this note.\n- **volume?: number** The volume to play the note at, from 0.0 to 3.0. Defaults to 1.0.\n- **pitch?: number** The pitch to play the note at in semitones, from 0 to 24. Defaults to 12.\n\n**Returns:**\n- boolean Whether the note could be played as the limit was reached."},{"label":"playSound","detail":"playSound(name: string, volume?: number, pitch?: number): boolean","parameters":["name: string","volume?: number","pitch?: number"],"documentation":"Plays a Minecraft sound through the speaker.\n\n**Parameters:**\n- **name: string** The name of the sound to play.\n- **volume?: number** The volume to play the sound at, from 0.0 to 3.0. Defaults to 1.0.\n- **pitch?: number** The speed to play the sound at, from 0.5 to 2.0. Defaults to 1.0.\n\n**Returns:**\n- boolean Whether the sound could be played.\n\n**Usage:**\n\nPlay a creeper hiss with the speaker.\n\n```\n\nlocal speaker = peripheral.find(\"speaker\")\n\nspeaker.playSound(\"entity.creeper.primed\")\n\n```"},{"label":"playAudio","detail":"playAudio(audio { number... } A list of amplitudes., volume?: number): boolean","parameters":["audio { number... } A list of amplitudes.","volume?: number"],"documentation":"Attempt to stream some audio data to the speaker.\n\n**Parameters:**\n- audio { number... } A list of amplitudes.\n- **volume?: number** The volume to play this audio at. If not given, defaults to the previous volume\ngiven to playAudio.\n\n**Returns:**\n- boolean If there was room to accept this audio data.\n\n**Usage:**\n\nRead an audio file, decode it using cc.audio.dfpwm, and play it using the speaker.\n\n```\n\nlocal dfpwm = require(\"cc.audio.dfpwm\")\n\nlocal speaker = peripheral.find(\"speaker\")\n\n\n\nlocal decoder = dfpwm.make_decoder()\n\nfor chunk in io.lines(\"data/example.dfpwm\", 16 * 1024) do\n\n    local buffer = decoder(chunk)\n\n\n\n    while not speaker.playAudio(buffer) do\n\n        os.pullEvent(\"speaker_audio_empty\")\n\n    end\n\nend\n\n```"},{"label":"stop","detail":"stop(): void","parameters":[],"documentation":"Stop all audio being played by this speaker."}];
+  }
+}

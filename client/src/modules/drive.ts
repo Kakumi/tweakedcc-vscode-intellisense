@@ -1,0 +1,13 @@
+import * as vscode from "vscode";
+import BaseModule from "./base.module";
+import { Method } from "../interfaces/method";
+
+export default class driveModule extends BaseModule {
+  constructor() {
+    super(`drive`, `Disk drives are a peripheral which allow you to read and write to floppy disks and other "mountable media" (such ascomputers or turtles). They also allow you to play records.`);
+  }
+
+  protected getMethods(): Method[] {
+    return [{"label":"isDiskPresent","detail":"isDiskPresent(): boolean","parameters":[],"documentation":"Returns whether a disk is currently inserted in the drive.\n\n**Returns:**\n- boolean Whether a disk is currently inserted in the drive."},{"label":"getDiskLabel","detail":"getDiskLabel(): string","parameters":[],"documentation":"Returns the label of the disk in the drive if available.\n\n**Returns:**\n- string | nil The label of the disk, or nil if either no disk is inserted or the disk doesn't have a label."},{"label":"setDiskLabel","detail":"setDiskLabel(label?: string): void","parameters":["label?: string"],"documentation":"Sets or clears the label for a disk.\n\n**Parameters:**\n- **label?: string** The new label of the disk, or nil to clear."},{"label":"hasData","detail":"hasData(): boolean","parameters":[],"documentation":"Returns whether a disk with data is inserted.\n\n**Returns:**\n- boolean Whether a disk with data is inserted."},{"label":"getMountPath","detail":"getMountPath(): string","parameters":[],"documentation":"Returns the mount path for the inserted disk.\n\n**Returns:**\n- string | nil The mount path for the disk, or nil if no data disk is inserted."},{"label":"hasAudio","detail":"hasAudio(): boolean","parameters":[],"documentation":"Returns whether a disk with audio is inserted.\n\n**Returns:**\n- boolean Whether a disk with audio is inserted."},{"label":"getAudioTitle","detail":"getAudioTitle(): string","parameters":[],"documentation":"Returns the title of the inserted audio disk.\n\n**Returns:**\n- string | nil | false The title of the audio, false if no disk is inserted, or nil if the disk has no audio."},{"label":"playAudio","detail":"playAudio(): void","parameters":[],"documentation":"Plays the audio in the inserted disk, if available."},{"label":"stopAudio","detail":"stopAudio(): void","parameters":[],"documentation":"Stops any audio that may be playing."},{"label":"ejectDisk","detail":"ejectDisk(): void","parameters":[],"documentation":"Ejects any disk that may be in the drive."},{"label":"getDiskID","detail":"getDiskID(): number","parameters":[],"documentation":"Returns the ID of the disk inserted in the drive.\n\n**Returns:**\n- number | nil The ID of the disk in the drive, or nil if no disk with an ID is inserted."}];
+  }
+}

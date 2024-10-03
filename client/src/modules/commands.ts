@@ -2,75 +2,12 @@ import * as vscode from "vscode";
 import BaseModule from "./base.module";
 import { Method } from "../interfaces/method";
 
-export default class CommandsModule extends BaseModule {
+export default class commandsModule extends BaseModule {
   constructor() {
-    super(
-      "commands",
-      `The \`commands\` object provides methods to interact with the Minecraft command system in Lua.
-    
-You can use it to run commands, check command blocks, and more.`
-    );
+    super(`commands`, `Execute Minecraft commands and gather data from the results froma command computer.`);
   }
 
   protected getMethods(): Method[] {
-    return [
-      {
-        label: "exec",
-        documentation: new vscode.MarkdownString(`Executes a Minecraft command.
-              
-              **Usage:** \`commands.exec(command: string)\`
-              - **command**: The Minecraft command to run as a string.
-              
-              **Returns:** A boolean indicating success, and a table with the command's result.`),
-        detail: "commands.exec(command: string): [boolean, table]",
-        parameters: ["command: string"],
-      },
-      {
-        label: "execAsync",
-        documentation:
-          new vscode.MarkdownString(`Asynchronously executes a Minecraft command.
-              
-              **Usage:** \`commands.execAsync(command: string)\`
-              - **command**: The Minecraft command to run as a string.
-              
-              **Returns:** A task ID, which can be used to query for results later.`),
-        detail: "commands.execAsync(command: string): number",
-        parameters: ["command: string"],
-      },
-      {
-        label: "list",
-        documentation:
-          new vscode.MarkdownString(`Lists all available Minecraft commands.
-              
-              **Usage:** \`commands.list()\`
-              - Returns a list of available commands as strings.`),
-        detail: "commands.list(): string[]",
-        parameters: [],
-      },
-      {
-        label: "getBlockPosition",
-        documentation:
-          new vscode.MarkdownString(`Gets the block position of the command computer.
-              
-              **Usage:** \`commands.getBlockPosition()\`
-              - Returns: The position as a table with x, y, z keys.`),
-        detail:
-          "commands.getBlockPosition(): {x: number, y: number, z: number}",
-        parameters: [],
-      },
-      {
-        label: "getBlockInfos",
-        documentation:
-          new vscode.MarkdownString(`Gets information about a block at a specific position.
-              
-              **Usage:** \`commands.getBlockInfos(x: number, y: number, z: number)\`
-              - **x, y, z**: The block coordinates as numbers.
-              
-              **Returns:** Information about the block as a table.`),
-        detail:
-          "commands.getBlockInfos(x: number, y: number, z: number): table",
-        parameters: ["x: number", "y: number", "z: number"],
-      },
-    ];
+    return [{"label":"exec","detail":"exec(command: string): boolean | { | number | varies","parameters":["command: string"],"documentation":"Execute a specific command.\n\n**Parameters:**\n- **command: string** The command to execute.\n\n**Returns:**\n- boolean Whether the command executed successfully.\n- { string... } The output of this command, as a list of lines.\n- number | nil The number of \"affected\" objects, or nil if the command failed. The definition of this\n- varies from command to command.\n\n**Usage:**\n\nSet the block above the command computer to stone.\n\n```\n\ncommands.exec(\"setblock ~ ~1 ~ minecraft:stone\")\n\n```"},{"label":"execAsync","detail":"execAsync(command: string): number","parameters":["command: string"],"documentation":"Asynchronously execute a command.\n\n**Parameters:**\n- **command: string** The command to execute.\n\n**Returns:**\n- number The \"task id\". When this command has been executed, it will queue a task_complete event with a matching id.\n\n**Usage:**\n\nAsynchronously sets the block above the computer to stone.\n\n```\n\ncommands.execAsync(\"setblock ~ ~1 ~ minecraft:stone\")\n\n```"},{"label":"list","detail":"list(... string The sub-command to complete.): {","parameters":["... string The sub-command to complete."],"documentation":"List all available commands which the computer has permission to execute.\n\n**Parameters:**\n- ... string The sub-command to complete.\n\n**Returns:**\n- { string... } A list of all available commands"},{"label":"getBlockPosition","detail":"getBlockPosition(): number","parameters":[],"documentation":"Get the position of the current command computer.\n\n**Returns:**\n- number This computer's x position.\n- number This computer's y position.\n- number This computer's z position."},{"label":"getBlockInfos","detail":"getBlockInfos(minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number, dimension?: string): {","parameters":["minX: number","minY: number","minZ: number","maxX: number","maxY: number","maxZ: number","dimension?: string"],"documentation":"Get information about a range of blocks.\n\n**Parameters:**\n- **minX: number** The start x coordinate of the range to query.\n- **minY: number** The start y coordinate of the range to query.\n- **minZ: number** The start z coordinate of the range to query.\n- **maxX: number** The end x coordinate of the range to query.\n- **maxY: number** The end y coordinate of the range to query.\n- **maxZ: number** The end z coordinate of the range to query.\n- **dimension?: string** The dimension to query (e.g. \"minecraft:overworld\"). Defaults to the current dimension.\n\n**Returns:**\n- { table... } A list of information about each block.\n\n**Usage:**\n\nPrint out all blocks in a cube around the computer.\n\n```\n\n-- Get a 3x3x3 cube around the computer\n\nlocal x, y, z = commands.getBlockPosition()\n\nlocal min_x, min_y, min_z, max_x, max_y, max_z = x - 1, y - 1, z - 1, x + 1, y + 1, z + 1\n\nlocal blocks = commands.getBlockInfos(min_x, min_y, min_z, max_x, max_y, max_z)\n\n\n\n-- Then loop over all blocks and print them out.\n\nlocal width, height, depth = max_x - min_x + 1, max_y - min_y + 1, max_z - min_z + 1\n\nfor x = min_x, max_x do\n\n  for y = min_y, max_y do\n\n    for z = min_z, max_z do\n\n      print((\"%d, %d %d => %s\"):format(x, y, z, blocks[(x - min_x) + (z - min_z) * width + (y - min_y) * width * depth + 1].name))\n\n    end\n\n  end\n\nend\n\n```"},{"label":"getBlockInfo","detail":"getBlockInfo(x: number, y: number, z: number, dimension?: string): table","parameters":["x: number","y: number","z: number","dimension?: string"],"documentation":"Get some basic information about a block.\n\n**Parameters:**\n- **x: number** The x position of the block to query.\n- **y: number** The y position of the block to query.\n- **z: number** The z position of the block to query.\n- **dimension?: string** The dimension to query (e.g. \"minecraft:overworld\"). Defaults to the current dimension.\n\n**Returns:**\n- table The given block's information."},{"label":"native","detail":"native(): void","parameters":[],"documentation":"The builtin commands API, without any generated command helper functions"},{"label":"async","detail":"async(): void","parameters":[],"documentation":"A table containing asynchronous wrappers for all commands.\n\n**Usage:**\n\nAsynchronously sets the block above the computer to stone.\n\n```\n\ncommands.async.setblock(\"~\", \"~1\", \"~\", \"minecraft:stone\")\n\n```"}];
   }
 }

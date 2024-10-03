@@ -42,13 +42,16 @@ export default abstract class BaseModule {
               method.label,
               vscode.CompletionItemKind.Method
             );
-            item.documentation = method.documentation;
+            if (method.documentation instanceof vscode.MarkdownString) {
+              item.documentation = method.documentation;
+            } else {
+              item.documentation = new vscode.MarkdownString(
+                method.documentation
+              );
+            }
             item.detail = method.detail;
             return item;
           });
-
-          console.log("nb items for " + key + " is ");
-          console.log(completionItems.length);
 
           return completionItems;
         },

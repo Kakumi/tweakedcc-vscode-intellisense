@@ -31,9 +31,17 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(objectsProviders, ...providers);
+
+  vscode.window.showInformationMessage(
+    "CC:Tweaked Lua IntelliSense activated."
+  );
 }
 
-export function deactivate() {}
+export function deactivate() {
+  vscode.window.showInformationMessage(
+    "CC:Tweaked Lua IntelliSense deactivated."
+  );
+}
 
 function startLanguageServer(context: vscode.ExtensionContext) {
   const serverModule = context.asAbsolutePath(

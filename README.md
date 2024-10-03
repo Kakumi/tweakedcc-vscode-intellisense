@@ -6,8 +6,18 @@ This project used [LSP Example](https://github.com/microsoft/vscode-extension-sa
 ## Functionality
 
 This Language Server works for lua file. It has the following language features:
+
 - Completions
 - Diagnostics regenerated on each file change or configuration change
+- Export LUA to Pastebin
+
+## Upload to Pastebin
+
+First, open your LUA file.
+
+Then, execute the command palette with `CTRL + Shift + P` then write `Upload to Pastebin`. The first time you execute this command you will ask your Pastebin API Key. Get your for free at [Pastebin Developers API](https://pastebin.com/doc_api?ref=wolfwithsword.com) (Section 'Your Unique Developer API Key').
+
+Now, a message box will appears with the pastebin URL and there is a button next to it to copy it to clipboard.
 
 ## Structure
 
@@ -31,6 +41,4 @@ This Language Server works for lua file. It has the following language features:
 - Switch to the Run and Debug View in the Sidebar (Ctrl+Shift+D).
 - Select `Launch Client` from the drop down (if it is not already).
 - Press ▷ to run the launch config (F5).
-- In the [Extension Development Host](https://code.visualstudio.com/api/get-started/your-first-extension#:~:text=Then%2C%20inside%20the%20editor%2C%20press%20F5.%20This%20will%20compile%20and%20run%20the%20extension%20in%20a%20new%20Extension%20Development%20Host%20window.) instance of VSCode, open a document in 'plain text' language mode.
-  - Type `j` or `t` to see `Javascript` and `TypeScript` completion.
-  - Enter text content such as `AAA aaa BBB`. The extension will emit diagnostics for all words in all-uppercase.
+- Select a .lua file and start coding !

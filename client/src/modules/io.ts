@@ -2,110 +2,12 @@ import * as vscode from "vscode";
 import BaseModule from "./base.module";
 import { Method } from "../interfaces/method";
 
-export default class IoModule extends BaseModule {
+export default class ioModule extends BaseModule {
   constructor() {
-    super(
-      "io",
-      `The \`io\` object provides methods for interacting with input and output, mainly for file handling.
-    
-It allows you to open, read, write, and manipulate files.`
-    );
+    super(`io`, `Emulates Lua's standard io library.`);
   }
 
   protected getMethods(): Method[] {
-    return [
-      {
-        label: "open",
-        documentation:
-          new vscode.MarkdownString(`Opens a file in the specified mode.
-				  
-				  **Usage:** \`io.open(filename: string, [mode: string])\`
-				  - **filename**: The name of the file to open.
-				  - **mode**: The mode to open the file in. Defaults to \`"r"\` (read mode).
-				  
-				  **Returns:** A file handle, or \`nil\` if the file cannot be opened.`),
-        detail: "io.open(filename: string, mode?: string): file | null",
-        parameters: ["filename: string", "mode?: string"],
-      },
-      {
-        label: "input",
-        documentation:
-          new vscode.MarkdownString(`Sets the current input file or returns the current input file handle.
-				  
-				  **Usage:** \`io.input([file: file | string])\`
-				  - **file**: The file or file name to set as the current input. If omitted, returns the current input file handle.`),
-        detail: "io.input(file?: file | string): file",
-        parameters: ["file?: file | string"],
-      },
-      {
-        label: "output",
-        documentation:
-          new vscode.MarkdownString(`Sets the current output file or returns the current output file handle.
-				  
-				  **Usage:** \`io.output([file: file | string])\`
-				  - **file**: The file or file name to set as the current output. If omitted, returns the current output file handle.`),
-        detail: "io.output(file?: file | string): file",
-        parameters: ["file?: file | string"],
-      },
-      {
-        label: "read",
-        documentation:
-          new vscode.MarkdownString(`Reads from the current input file.
-				  
-				  **Usage:** \`io.read([format: string])\`
-				  - **format**: The format of what to read (\`"*all"\`, \`"*line"\`, \`"*number"\`, etc.). Defaults to \`"*line"\` if omitted.
-				  
-				  **Returns:** The data read from the file in the specified format.`),
-        detail: "io.read(format?: string): string | number | null",
-        parameters: ["format?: string"],
-      },
-      {
-        label: "write",
-        documentation:
-          new vscode.MarkdownString(`Writes to the current output file.
-				  
-				  **Usage:** \`io.write(...)\`
-				  - Accepts multiple arguments of different types to write to the file.
-				  
-				  **Returns:** \`true\` on success, or \`nil\` on failure.`),
-        detail: "io.write(...): boolean",
-        parameters: ["..."],
-      },
-      {
-        label: "flush",
-        documentation:
-          new vscode.MarkdownString(`Flushes the current output file, ensuring that all written data is saved.
-				  
-				  **Usage:** \`io.flush()\`
-				  
-				  **Returns:** \`true\` if the flush was successful, or \`nil\` on failure.`),
-        detail: "io.flush(): boolean",
-        parameters: [],
-      },
-      {
-        label: "close",
-        documentation:
-          new vscode.MarkdownString(`Closes the current input or output file.
-				  
-				  **Usage:** \`io.close([file: file])\`
-				  - **file**: The file handle to close. If omitted, closes the current file.
-				  
-				  **Returns:** \`true\` if the file was closed successfully, or \`nil\` on failure.`),
-        detail: "io.close(file?: file): boolean",
-        parameters: ["file?: file"],
-      },
-      {
-        label: "type",
-        documentation:
-          new vscode.MarkdownString(`Returns the type of the provided file handle.
-				  
-				  **Usage:** \`io.type(file: file)\`
-				  - **file**: The file handle to check.
-				  
-				  **Returns:** A string representing the type of the file handle (\`"file"\` or \`"closed file"\`).`),
-        detail: "io.type(file: file): string",
-        parameters: ["file: file"],
-      },
-    ];
+    return [{"label":"stdin","detail":"stdin(): void","parameters":[],"documentation":"A file handle representing the \"standard input\". Reading from this\nfile will prompt the user for input."},{"label":"stdout","detail":"stdout(): void","parameters":[],"documentation":"A file handle representing the \"standard output\". Writing to this\nfile will display the written text to the screen."},{"label":"stderr","detail":"stderr(): void","parameters":[],"documentation":"A file handle representing the \"standard error\" stream."},{"label":"close","detail":"close(file?: Handle): void","parameters":["file?: Handle"],"documentation":"Closes the provided file handle.\n\n**Parameters:**\n- **file?: Handle** The file handle to close, defaults to the\ncurrent output file."},{"label":"flush","detail":"flush(): void","parameters":[],"documentation":"Flushes the current output file."},{"label":"input","detail":"input(file?: Handle): Handle","parameters":["file?: Handle"],"documentation":"Get or set the current input file.\n\n**Parameters:**\n- **file?: Handle** | string The new input file, either as a file path or pre-existing handle.\n\n**Returns:**\n- Handle The current input file."},{"label":"lines","detail":"lines(filename?: string, ...  The argument to pass to Handle:read for each line.): function():string","parameters":["filename?: string","...  The argument to pass to Handle:read for each line."],"documentation":"Opens the given file name in read mode and returns an iterator that,\neach time it is called, returns a new line from the file.\n\n**Parameters:**\n- **filename?: string** The name of the file to extract lines from\n- ...  The argument to pass to Handle:read for each line.\n\n**Returns:**\n- function():string | nil The line iterator.\n\n**Usage:**\n\nIterate over every line in a file and print it out.\n\n```\n\nfor line in io.lines(\"/rom/help/intro.txt\") do\n\n  print(line)\n\nend\n\n```"},{"label":"open","detail":"open(filename: string, mode?: string): Handle | nil | string","parameters":["filename: string","mode?: string"],"documentation":"Open a file with the given mode, either returning a new file handle\nor nil, plus an error message.\n\n**Parameters:**\n- **filename: string** The name of the file to open.\n- **mode?: string** The mode to open the file with. This defaults to r.\n\n**Returns:**\n- Handle The opened file.\n- nil In case of an error.\n- string The reason the file could not be opened."},{"label":"output","detail":"output(file?: Handle): Handle","parameters":["file?: Handle"],"documentation":"Get or set the current output file.\n\n**Parameters:**\n- **file?: Handle** | string The new output file, either as a file path or pre-existing handle.\n\n**Returns:**\n- Handle The current output file."},{"label":"read","detail":"read(... string The formats to read, defaulting to a whole line.): string","parameters":["... string The formats to read, defaulting to a whole line."],"documentation":"Read from the currently opened input file.\n\n**Parameters:**\n- ... string The formats to read, defaulting to a whole line.\n\n**Returns:**\n- string | nil... The data read, or nil if nothing can be read."},{"label":"type","detail":"type(obj  The value to check): string | is","parameters":["obj  The value to check"],"documentation":"Checks whether handle is a given file handle, and determine if it is open\nor not.\n\n**Parameters:**\n- obj  The value to check\n\n**Returns:**\n- string | nil \"file\" if this is an open file, \"closed file\" if it\n- is a closed file handle, or nil if not a file handle."},{"label":"write","detail":"write(... string The strings to write): void","parameters":["... string The strings to write"],"documentation":"Write to the currently opened output file.\n\n**Parameters:**\n- ... string The strings to write"},{"label":"ty:Handle:close","detail":"ty:Handle:close(): true | nil | string","parameters":[],"documentation":"Close this file handle, freeing any resources it uses.\n\n**Returns:**\n- true If this handle was successfully closed.\n- nil If this file handle could not be closed.\n- string The reason it could not be closed."},{"label":"ty:Handle:flush","detail":"ty:Handle:flush(): void","parameters":[],"documentation":"Flush any buffered output, forcing it to be written to the file"},{"label":"ty:Handle:lines","detail":"ty:Handle:lines(...  The argument to pass to Handle:read for each line.): function():string","parameters":["...  The argument to pass to Handle:read for each line."],"documentation":"Returns an iterator that, each time it is called, returns a new\nline from the file.\n\n**Parameters:**\n- ...  The argument to pass to Handle:read for each line.\n\n**Returns:**\n- function():string | nil The line iterator.\n\n**Usage:**\n\nIterate over every line in a file and print it out.\n\n```\n\nlocal file = io.open(\"/rom/help/intro.txt\")\n\nfor line in file:lines() do\n\n  print(line)\n\nend\n\nfile:close()\n\n```"},{"label":"ty:Handle:read","detail":"ty:Handle:read(...  The formats to use.): string","parameters":["...  The formats to use."],"documentation":"Reads data from the file, using the specified formats. For each\nformat provided, the function returns either the data read, or nil if\nno data could be read.\n\n**Parameters:**\n- ...  The formats to use.\n\n**Returns:**\n- string | nil... The data read from the file."},{"label":"ty:Handle:seek","detail":"ty:Handle:seek(whence?: string, offset?: number): number","parameters":["whence?: string","offset?: number"],"documentation":"Seeks the file cursor to the specified position, and returns the\nnew position.\n\n**Parameters:**\n- **whence?: string** The place to set the cursor from.\n- **offset?: number** The offset from the start to move to.\n\n**Returns:**\n- number The new location of the file cursor."},{"label":"ty:Handle:setvbuf","detail":"ty:Handle:setvbuf(mode: string, size?: number): void","parameters":["mode: string","size?: number"],"documentation":"This has no effect in CC.\n\n**Parameters:**\n- **mode: string** The buffering mode.\n- **size?: number** The size of the buffer."},{"label":"ty:Handle:write","detail":"ty:Handle:write(... string | number The values to write.): Handle | nil | string","parameters":["... string | number The values to write."],"documentation":"Write one or more values to the file\n\n**Parameters:**\n- ... string | number The values to write.\n\n**Returns:**\n- Handle The current file, allowing chained calls.\n- nil If the file could not be written to.\n- string The error message which occurred while writing."}];
   }
 }
