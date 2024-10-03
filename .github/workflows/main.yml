@@ -51,8 +51,8 @@ jobs:
         path: ./ # This will download the artifact to the current directory
 
     - name: Get version
-      uses: culshaw/read-package-node-version-actions@v2.0.0
-      id: get-version
+      uses: tibor19/node-version-from-package-json@v2
+      id: node-version
       
     - name: Create Draft Release
       id: create_release
@@ -60,8 +60,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: "v${{ steps.package-node-version.outputs.version }}"
-        release_name: "${{ steps.package-node-version.outputs.version }}"
+        tag_name: "v${{ steps.node-version.outputs.version }}"
+        release_name: "${{ steps.node-version.outputs.version }}"
         draft: false
         prerelease: false
     
