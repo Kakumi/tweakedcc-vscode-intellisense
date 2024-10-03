@@ -50,9 +50,12 @@ jobs:
         name: cctweaked-intellisense
         path: ./ # This will download the artifact to the current directory
 
-    - name: Get version
-      uses: gagle/package-version@v1
+    - name: Get Version
+      uses: xile611/read-package-version-action@v1
       id: package-version
+
+    - name: Show version number
+      run: echo "Version is ${{ steps.package-version.outputs.version }}"
 
     - name: Release
       uses: softprops/action-gh-release@v2
