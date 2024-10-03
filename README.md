@@ -1,6 +1,6 @@
-# Tweaked:CC IntelliSense
+# CC:Tweaked IntelliSense
 
-VSCode Extension to support IntelliSense for [Tweaked:CC](https://tweaked.cc) (previously [ComputerCraft](https://github.com/dan200/ComputerCraft))
+VSCode Extension to support IntelliSense for [CC:Tweaked](https://tweaked.cc) (previously [ComputerCraft](https://github.com/dan200/ComputerCraft))
 This project used [LSP Example](https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-sample) and [vscode-lua](https://github.com/trixnz/vscode-lua).
 
 ## Functionality
